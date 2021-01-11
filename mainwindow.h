@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "database.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +16,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_btn_insert_released();
+    void on_btn_delete_released();
+
+    void on_btn_update_released();
+
 private:
     Ui::MainWindow *ui;
+    DataBase* p_database;
+
 };
 #endif // MAINWINDOW_H
