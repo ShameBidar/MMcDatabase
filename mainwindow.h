@@ -22,6 +22,8 @@ private slots:
 
     void on_btn_update_released();
 
+    void on_btn_showdev_released();
+
 private:
     Ui::MainWindow *ui;
     DataBase* p_database;

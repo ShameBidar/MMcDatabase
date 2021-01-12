@@ -46,22 +46,7 @@ DataBase::DataBase(QObject* parent) : QObject(parent)
                     }
                     else
                     {
-                        QSqlQuery qss("SELECT IP, Netmask, AutoTimeSetting, AutoDiskSize,  ManDiskSize, EmgDiskSize, Password FROM setting");
-                        if(qss.next())
-                        {
-                            setting_info.ip = qss.value(0).toString();
-                            setting_info.netmask = qss.value(1).toString();
-                            setting_info.is_autotime = qss.value(2).toBool();
-                            setting_info.auto_disksize = qss.value(3).toInt();
-                            setting_info.man_disksize = qss.value(4).toInt();
-                            setting_info.emg_disksize = qss.value(5).toInt();
-                            setting_info.password = qss.value(6).toString();
 
-                            qDebug() << "Setting Info: " << setting_info.ip << " - " << setting_info.netmask << " - "
-                                     << setting_info.is_autotime << " - " << setting_info.auto_disksize <<  " - " << setting_info.man_disksize << " - "
-                                     <<  setting_info.emg_disksize <<  " - " << setting_info.password ;
-
-                        }
                     }
                 }
 
@@ -201,4 +186,51 @@ void DataBase::updateSettingFields(DataBase::SETTING_FIELD in_field, bool in_val
      }
      QSqlDatabase::removeDatabase(db_name);
 
+}
+
+
+void DataBase::getSettingRecods(DataBase::SettingInfo_t& out_record)
+{
+    {
+         QSqlDatabase db = QSqlDatabase::database(db_name);
+         QSqlQuery qs("SELECT IP, Netmask, AutoTimeSetting, AutoDiskSize,  ManDiskSize, EmgDiskSize, Password FROM setting");
+         if(qs.next())
+         {
+             out_record.ip = qs.value(0).toString();
+             out_record.netmask = qs.value(1).toString();
+             out_record.is_autotime = qs.value(2).toBool();
+             out_record.auto_disksize = qs.value(3).toInt();
+             out_record.man_disksize = qs.value(4).toInt();
+             out_record.emg_disksize = qs.value(5).toInt();
+             out_record.password = qs.value(6).toString();
+
+         }
+     }
+     QSqlDatabase::removeDatabase(db_name);
+}
+
+
+void DataBase::getDevRecords(QList<DataBase::DevInfo_t>& out_record)
+{
+    {
+         QSqlDatabase db = QSqlDatabase::database(db_name);
+         QSqlQuery qs("SELECT Name,Type,IP,Mac,Gateway,Netmask,Place,Stream,WagonNom,CHNom,CameraPos FROM device");
+         while(qs.next())
+         {
+             DevInfo_t device;
+             device.name = qs.value(0).toString();
+             device.type = qs.value(1).toInt();
+             device.ip = qs.value(2).toString();
+             device.mac = qs.value(3).toString();
+             device.gateway = qs.value(4).toString();
+             device.netmask = qs.value(5).toString();
+             device.place = qs.value(6).toString();
+             device.stream = qs.value(7).toString();
+             device.wagon_nom = qs.value(8).toString();
+             device.channel_nom = qs.value(9).toString();
+             device.camera_position = qs.value(10).toInt();
+             out_record.append(device);
+         }
+     }
+     QSqlDatabase::removeDatabase(db_name);
 }

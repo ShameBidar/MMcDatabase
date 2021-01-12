@@ -25,6 +25,23 @@ public:
         bool is_autotime;
     }SettingInfo_t;
 
+    typedef struct
+    {
+        QString name;
+        int type;
+        QString ip;
+        QString mac;
+        QString gateway;
+        QString netmask;
+        QString place;
+        QString stream;
+        QString wagon_nom;
+        QString channel_nom;
+        int camera_position;
+    }DevInfo_t;
+
+
+
     enum DEVICE_FIELD
     {
         DEVICE_NAME,
@@ -56,6 +73,8 @@ public:
     void updateSettingFields(SETTING_FIELD in_field, bool in_val);
     void insertDevRecord(Device* in_dev);
     void removeDevRecord(Device* in_dev);
+    void getSettingRecods(SettingInfo_t& out_record);
+    void getDevRecords(QList<DevInfo_t>& out_record);
 
 
 private:

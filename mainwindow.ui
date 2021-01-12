@@ -99,6 +99,19 @@
      <string>update</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_showdev">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>240</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>show dev</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

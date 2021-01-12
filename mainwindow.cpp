@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "device.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -57,5 +58,16 @@ void MainWindow::on_btn_update_released()
     int nom = str_int.toInt();
     p_database->updateSettingFields(DataBase::SETTING_PASSWORD,str);
     p_database->updateSettingFields(DataBase::SETTING_AUTODISK_SIZE,nom);
+
+}
+
+void MainWindow::on_btn_showdev_released()
+{
+    QList<DataBase::DevInfo_t> dev;
+    p_database->getDevRecords(dev);
+    foreach (DataBase::DevInfo_t v, dev) {
+       qDebug() << v.name << " " << v.type << " " << v.ip << " " << v.mac << " " << v.gateway << " " << v.netmask << " "
+                   << v.place << " " << v.stream << " " << v.wagon_nom << " " << v.channel_nom << " " << QString("%1").arg(v.camera_position) << " ";
+    }
 
 }
