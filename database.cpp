@@ -82,7 +82,7 @@ void DataBase::insertDevRecord(Device* in_dev)
          QSqlDatabase db = QSqlDatabase::database(db_name);
          QSqlQuery qi;
          QString cmd = QString("INSERT INTO device (Name,Type,IP,Mac,Gateway,Netmask,Place,Stream,WagonNom,CHNom,CameraPos) VALUES ('%1','%2','%3','%4','%5','%6','%7','%8','%9','%10','%11')").
-                 arg(name).arg(type).arg(mac).arg(gateway).arg(ip_addr).arg(net_mask).arg(place).arg(stream).arg(wagon_nom).arg(chnom).arg(camera_pos);
+                 arg(name).arg(type).arg(ip_addr).arg(mac).arg(gateway).arg(net_mask).arg(place).arg(stream).arg(wagon_nom).arg(chnom).arg(camera_pos);
          if(!qi.exec(cmd))
              qWarning() << "MainWindow::DatabasePopulate - ERROR: " << qi.lastError().text();
      }
@@ -109,7 +109,7 @@ void DataBase::removeDevRecord(Device* in_dev)
          QSqlDatabase db = QSqlDatabase::database(db_name);
          QSqlQuery qi;
          QString cmd = QString("DELETE FROM device WHERE Name='%1' AND Type='%2' AND IP='%3' AND Mac='%4' AND Gateway='%5' AND Netmask='%6' AND Place='%7' AND Stream='%8' AND WagonNom='%9' AND CHNom='%10' AND CameraPos='%11'").
-                 arg(name).arg(type).arg(mac).arg(gateway).arg(ip_addr).arg(net_mask).arg(place).arg(stream).arg(wagon_nom).arg(chnom).arg(camera_pos);
+                 arg(name).arg(type).arg(ip_addr).arg(mac).arg(gateway).arg(net_mask).arg(place).arg(stream).arg(wagon_nom).arg(chnom).arg(camera_pos);
          if(!qi.exec(cmd))
              qWarning() << "MainWindow::DatabasePopulate - ERROR: " << qi.lastError().text();
      }
