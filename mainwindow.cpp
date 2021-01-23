@@ -56,8 +56,11 @@ void MainWindow::on_btn_update_released()
     QString str = ui->ledit_string->text();
     QString str_int = ui->ledit_integer->text();
     int nom = str_int.toInt();
-    p_database->updateSettingFields(DataBase::SETTING_PASSWORD,str);
-    p_database->updateSettingFields(DataBase::SETTING_AUTODISK_SIZE,nom);
+    //p_database->updateSettingFields(DataBase::SETTING_PASSWORD,str);
+    //p_database->updateSettingFields(DataBase::SETTING_AUTODISK_SIZE,nom);
+    DataBase::SettingInfo_t setting = {str,str,str,nom,nom,nom,true,str};
+
+    p_database->updateSettingRecords(setting);
 
 }
 

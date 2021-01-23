@@ -26,7 +26,7 @@ DataBase::DataBase(QObject* parent) : QObject(parent)
             }
 
             /////////////////////// create setting table ///////////////////////
-            cmd = "CREATE TABLE  IF NOT EXISTS setting (IP VARCHAR(30), Netmask VARCHAR(30), AutoTimeSetting BOOL, AutoDiskSize INTEGER,  ManDiskSize INTEGER, EmgDiskSize INTEGER, Password VARCHAR(30))";
+            cmd = "CREATE TABLE  IF NOT EXISTS setting (IP VARCHAR(30), Netmask VARCHAR(30), AutoTimeSetting BOOL, AutoDiskSize INTEGER,  ManDiskSize INTEGER, EmgDiskSize INTEGER, Password VARCHAR(30), TrainNom VARCHAR(30))";
             if(!qc.exec(cmd))
             {
                 qWarning() << "MainWindow::DatabaseInit - ERROR: " << qc.lastError().text();
@@ -40,7 +40,7 @@ DataBase::DataBase(QObject* parent) : QObject(parent)
                     if(row_count == 0)
                     {
                         QSqlQuery qi;
-                        cmd = "INSERT INTO setting (IP, Netmask , AutoTimeSetting, AutoDiskSize,  ManDiskSize, EmgDiskSize, Password) VALUES (' ',' ',TRUE,0,0,0,' ')";
+                        cmd = "INSERT INTO setting (IP, Netmask , AutoTimeSetting, AutoDiskSize,  ManDiskSize, EmgDiskSize, Password, TrainNom) VALUES (' ',' ',TRUE,0,0,0,' ',' ')";
                         if(!qi.exec(cmd))
                             qWarning() << "MainWindow::DatabasePopulate - ERROR: " << qi.lastError().text();
                     }
@@ -193,7 +193,7 @@ void DataBase::getSettingRecods(DataBase::SettingInfo_t& out_record)
 {
     {
          QSqlDatabase db = QSqlDatabase::database(db_name);
-         QSqlQuery qs("SELECT IP, Netmask, AutoTimeSetting, AutoDiskSize,  ManDiskSize, EmgDiskSize, Password FROM setting");
+         QSqlQuery qs("SELECT IP, Netmask, AutoTimeSetting, AutoDiskSize,  ManDiskSize, EmgDiskSize, Password, TrainNom FROM setting");
          if(qs.next())
          {
              out_record.ip = qs.value(0).toString();
@@ -203,7 +203,7 @@ void DataBase::getSettingRecods(DataBase::SettingInfo_t& out_record)
              out_record.man_disksize = qs.value(4).toInt();
              out_record.emg_disksize = qs.value(5).toInt();
              out_record.password = qs.value(6).toString();
-
+             out_record.train_nom = qs.value(7).toString();
          }
      }
      QSqlDatabase::removeDatabase(db_name);
@@ -233,4 +233,21 @@ void DataBase::getDevRecords(QList<DataBase::DevInfo_t>& out_record)
          }
      }
      QSqlDatabase::removeDatabase(db_name);
+}
+
+
+
+void DataBase::updateSettingRecords(DataBase::SettingInfo_t in_rec)
+{
+    QString cmd = QString("UPDATE setting Set IP = '%1', Netmask='%2' , AutoTimeSetting='%3', AutoDiskSize='%4',  ManDiskSize='%5', EmgDiskSize='%6', Password='%7', TrainNom='%8'")
+            .arg(in_rec.ip).arg(in_rec.netmask).arg(in_rec.is_autotime).arg(in_rec.auto_disksize).arg(in_rec.man_disksize).arg(in_rec.emg_disksize).arg(in_rec.password).arg(in_rec.train_nom);
+
+    {
+         QSqlDatabase db = QSqlDatabase::database(db_name);
+         QSqlQuery qu;
+         if(!qu.exec(cmd))
+             qWarning() << "MainWindow::DatabasePopulate - ERROR: " << qu.lastError().text();
+     }
+     QSqlDatabase::removeDatabase(db_name);
+
 }

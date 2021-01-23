@@ -23,6 +23,7 @@ public:
         int man_disksize;
         int emg_disksize;
         bool is_autotime;
+        QString train_nom;
     }SettingInfo_t;
 
     typedef struct
@@ -72,6 +73,7 @@ public:
     void updateSettingFields(SETTING_FIELD in_field, int in_val);
     void updateSettingFields(SETTING_FIELD in_field, bool in_val);
     void insertDevRecord(Device* in_dev);
+    void updateSettingRecords(SettingInfo_t in_rec);
     void removeDevRecord(Device* in_dev);
     void getSettingRecods(SettingInfo_t& out_record);
     void getDevRecords(QList<DevInfo_t>& out_record);
